@@ -1,0 +1,86 @@
+global:
+  scrape_interval: 30s
+  evaluation_interval: 20s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+scrape_configs:
+  - job_name: "prometheus"
+    metrics_path: "/metrics"
+    scrape_timeout: 10s
+    scheme: http
+    static_configs:
+      - targets:
+          - "localhost:9090"
+
+  - job_name: "api_gateway"
+    metrics_path: "/metrics"
+    scheme: http
+    static_configs:
+      - targets:
+          - "api_gateway:8000"
+
+  - job_name: 'auth_service'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    metrics_path: '/metrics'
+    scheme: http
+    static_configs:
+      - targets:
+          - 'auth:4001'
+
+  # - job_name: 'analytics_service'
+  #   scrape_interval: 30s
+  #   scrape_timeout: 10s
+  #   metrics_path: '/metrics'
+  #   scheme: http
+  #   static_configs:
+  #     - targets:
+  #         - 'analytics_service:4002'
+
+  # - job_name: 'filings_service'
+  #   scrape_interval: 30s
+  #   scrape_timeout: 10s
+  #   metrics_path: '/metrics'
+  #   scheme: http
+  #   static_configs:
+  #     - targets:
+  #         - 'filings_service:4003'
+
+  # - job_name: 'payment_service'
+  #   scrape_interval: 30s
+  #   scrape_timeout: 10s
+  #   metrics_path: '/metrics'
+  #   scheme: http
+  #   static_configs:
+  #     - targets:
+  #         - 'payment_service:4004'
+
+  # - job_name: 'remittance_service'
+  #   scrape_interval: 30s
+  #   scrape_timeout: 10s
+  #   metrics_path: '/metrics'
+  #   scheme: http
+  #   static_configs:
+  #     - targets:
+  #         - 'remittance_service:4005'
+
+  # - job_name: 'taxinfo_service'
+  #   scrape_interval: 30s
+  #   scrape_timeout: 10s
+  #   metrics_path: '/metrics'
+  #   scheme: http
+  #   static_configs:
+  #     - targets:
+  #         - 'taxinfo_service:4006'
+
+  # - job_name: 'assessment_service'
+  #   scrape_interval: 30s
+  #   scrape_timeout: 10s
+  #   metrics_path: '/metrics'
+  #   scheme: http
+  #   static_configs:
+  #     - targets:
+  #         - 'assessment:4009'
