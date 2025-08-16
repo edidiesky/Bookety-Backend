@@ -17,6 +17,7 @@ export interface IUser extends Document {
   address: string;
   role: UserRole;
   isCompliant: boolean;
+  isEmailVerified: boolean;
   phone: string;
   image: string;
   username: string;
@@ -26,15 +27,17 @@ export interface IUser extends Document {
 const userSchema = new Schema<IUser>(
   {
     firstname: { type: String },
-    email: { type: String, required: true },
+    email: { type: String, required: true, unique:true },
     password: { type: String },
     lastname: { type: String },
     isVerified: { type: Boolean, default: false },
+    isEmailVerified: { type: Boolean, default: false },
     isCompliant: { type: Boolean, default: false },
     address: { type: String },
     phone: { type: String },
     image: { type: String },
     username: { type: String },
+    lastLogin: { type: Date },
     role: {
       type: String,
       enum: Object.values(UserRole),
@@ -43,3 +46,7 @@ const userSchema = new Schema<IUser>(
   },
   { timestamps: true }
 );
+
+userSchema.index({ email: 1, firstname: 1, lastname: 1, phone: 1, role: 1 });
+
+export default mongoose.model<IUser>("User", userSchema);

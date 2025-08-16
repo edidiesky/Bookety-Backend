@@ -53,13 +53,14 @@ export const generateSecureToken = async (
     now.setMinutes(now.getMinutes() + 1);
     if (type === "reset") {
       await redisClient.set(
-        `reset:token:${userId}`,
+        `reset:token:${token}`,
         JSON.stringify({
           token,
           expiresAt: now,
+          userId,
         }),
         "EX",
-        1 * 60
+        2 * 60
       );
     }
     if (type === "refresh") {
