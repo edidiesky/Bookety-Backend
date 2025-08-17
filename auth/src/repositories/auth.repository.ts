@@ -32,20 +32,7 @@ export class AuthController {
     this.authService = AuthService;
     this.authProducer = new AuthProducer();
   }
-  async registerHandler(req: Request, res: Response) {
-    try {
-      const { email } = req.body;
-    } catch (error: any) {
-      logger.error("Registration Error", error);
-      res.status(BAD_REQUEST_STATUS_CODE).json({
-        message:
-          "An error did occurred during the registration process. Please try again!",
-        status: "error",
-        data: null,
-      });
-    }
-  }
-  async loginHandler(req: Request, res: Response) {
+   async loginHandler(req: Request, res: Response) {
     // Send 2fa
     try {
       const { email, password } = req.body;
@@ -120,7 +107,20 @@ export class AuthController {
       });
     }
   }
-  async twoFAHandler(req: Request, res: Response) {}
+  async registerHandler(req: Request, res: Response) {
+    try {
+      const { email } = req.body;
+    } catch (error: any) {
+      logger.error("Registration Error", error);
+      res.status(BAD_REQUEST_STATUS_CODE).json({
+        message:
+          "An error did occurred during the registration process. Please try again!",
+        status: "error",
+        data: null,
+      });
+    }
+  }
+  async twoFAHandler(req: Request, res: Response)   {}
 
   /**
    * @description LOGOUT USER HANDLER
@@ -153,7 +153,7 @@ export class AuthController {
     res.status(200).json({ message: "Logged out succesfully!!" });
   }
   /**
-   * @description REQUEST PASSWORD RESET HANDLER
+   * @description   REQUEST PASSWORD RESET HANDLER
    */
   async requestPasswordResetHandler(req: Request, res: Response) {
     try {

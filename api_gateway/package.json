@@ -1,5 +1,5 @@
 {
-  "name": "bookety-auth",
+  "name": "bookety-api-gateway",
   "version": "1.0.0",
   "scripts": {
     "dev": "ts-node-dev src/server.ts",

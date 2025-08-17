@@ -58,8 +58,13 @@ export class AuthConsumer {
       await this.channel?.assertExchange(AUTH_EXCHANGE, "topic", {
         durable: true,
       });
+      let queueOptions = {
+        durable: true,
+        "x-message-ttl": 60 * 60 * 3 * 1000,
+        "x-max-length": 1000,
+      };
       for (let [topic, queue] of Object.entries(QUEUE)) {
-        await this.channel?.assertQueue(queue, { durable: true });
+        await this.channel?.assertQueue(queue, queueOptions);
         await this.channel?.bindQueue(queue, AUTH_EXCHANGE, topic);
       }
       //   CONSUMING THE MESSAGES
@@ -92,10 +97,6 @@ export class AuthConsumer {
         await this.channel.close();
         this.channel = null;
       }
-      // if (this.connection) {
-      //   await this.connection.close();
-      //   this.connection = null;
-      // }
     } catch (error) {
       logger.error("Failed to disconnect Auth Channel", { error });
     }

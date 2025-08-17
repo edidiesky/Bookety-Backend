@@ -82,12 +82,13 @@ export class AuthProducer {
         logger.error(`Auth Producer Channel has not been initialized`);
         throw new Error("Auth Producer Channel has not been initialized");
       }
-      const exchange =
-        topic === BOOKETY_AUTH_2FA_NOTIFICATION_TOPIC ||
-        topic === BOOKETY_AUTH_SIGNIN_NOTIFICATION_TOPIC ||
-        topic === BOOKETY_AUTH_RESET_PASSWORD_TOKEN_NOTIFICATION_TOPIC
-          ? NOTIFICATION_EXCHANGE
-          : AUTH_EXCHANGE;
+      const exchange = [
+        BOOKETY_AUTH_2FA_NOTIFICATION_TOPIC,
+        BOOKETY_AUTH_SIGNIN_NOTIFICATION_TOPIC,
+        BOOKETY_AUTH_RESET_PASSWORD_TOKEN_NOTIFICATION_TOPIC,
+      ].includes(topic)
+        ? NOTIFICATION_EXCHANGE
+        : AUTH_EXCHANGE;
       // declared exchange, queue, and also bind queue to exchange using the right routing key
       await this.channel.publish(
         exchange,
@@ -114,10 +115,6 @@ export class AuthProducer {
         await this.channel.close();
         this.channel = null;
       }
-      // if (this.connection) {
-      //   await this.connection.close();
-      //   this.connection = null;
-      // }
     } catch (error) {
       logger.error("Failed to disconnect Auth Channel", { error });
     }
